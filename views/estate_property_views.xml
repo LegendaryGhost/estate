@@ -55,11 +55,11 @@
                 <sheet>
                     <div class="oe_title">
                         <h1><field name="name" placeholder="My new house"/></h1>
-                        <p><field name="tag_ids" widget="many2many_tags"/></p>
+                        <p><field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/></p>
                     </div>
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
