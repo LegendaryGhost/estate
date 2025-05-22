@@ -1,8 +1,13 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, exceptions, tools
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+
+    _sql_constraints = [
+        ('positive_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive'),
+        ('positive_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive'),
+    ]
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text()
@@ -62,6 +67,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_price_percentage(self):
+        for property in self:
+            if not tools.float_is_zero(property.selling_price, precision_digits=2) and tools.float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) == -1:
+                raise exceptions.ValidationError("The selling price must be atleast 90% of the expected price. Please raises the offer price or lower the excpected price to fix this.")
 
     def action_set_sold_state(self):
         for property in self:

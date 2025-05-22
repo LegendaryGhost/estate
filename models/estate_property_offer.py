@@ -4,6 +4,10 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate property offer"
 
+    _sql_constraints = [
+        ('positive_price', 'CHECK(price > 0)', 'The offer\'s price must be strictly positive')
+    ]
+
     price = fields.Float()
     status = fields.Selection(
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
@@ -38,7 +42,9 @@ class EstatePropertyOffer(models.Model):
             offer.status = "accepted"
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
+        return True
 
     def refuse(self):
         for offer in self:
             offer.status = "refused"
+        return True
