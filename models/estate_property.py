@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
         ('positive_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive'),
         ('positive_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive'),
     ]
+    _order = "id DESC"
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text()

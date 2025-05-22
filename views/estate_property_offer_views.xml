@@ -9,7 +9,7 @@
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <button name="accept" type="object" string="Accept" icon="fa-check"/>
-                <button name="refuse" type="object" string="Refuse" icon="fa-xmark"/>
+                <button name="refuse" type="object" string="Refuse" icon="fa-close"/>
                 <field name="status"/>
             </list>
         </field>
