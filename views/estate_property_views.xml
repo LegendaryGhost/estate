@@ -50,6 +50,7 @@
                 <sheet>
                     <div class="oe_title">
                         <h1><field name="name" placeholder="My new house"/></h1>
+                        <p><field name="tag_ids" widget="many2many_tags"/></p>
                     </div>
                     <group>
                         <group>
