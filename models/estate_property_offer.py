@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     _order = "price DESC"
 
     price = fields.Float()
-    status = fields.Selection(
+    state = fields.Selection(
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         copy=False
     )
@@ -40,12 +40,12 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             if offer.property_id.buyer_id:
                 raise exceptions.UserError("The property '%s' has already been sold" % offer.property_id.name)
-            offer.status = "accepted"
+            offer.state = "accepted"
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
         return True
 
     def refuse(self):
         for offer in self:
-            offer.status = "refused"
+            offer.state = "refused"
         return True

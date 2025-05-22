@@ -8,9 +8,9 @@
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <button name="accept" type="object" string="Accept" icon="fa-check"/>
-                <button name="refuse" type="object" string="Refuse" icon="fa-close"/>
-                <field name="status"/>
+                <button name="accept" type="object" string="Accept" icon="fa-check" invisible="state != False"/>
+                <button name="refuse" type="object" string="Refuse" icon="fa-close" invisible="state != False"/>
+                <field name="state"/>
             </list>
         </field>
     </record>
@@ -26,7 +26,7 @@
                         <field name="partner_id"/>
                         <field name="validity"/>
                         <field name="date_deadline"/>
-                        <field name="status"/>
+                        <field name="state"/>
                     </group>
                 </sheet>
             </form>
