@@ -1,4 +1,4 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, exceptions, tools
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -18,7 +18,7 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
-    property_type_id = fields.Many2one(related="property_id.property_type_id", stored=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
 
@@ -50,3 +50,13 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.state = "refused"
         return True
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            property.state = 'offer_received'
+            max_offer_price = max(property.offer_ids.mapped('price'), default=0.0)
+            if tools.float_compare(vals['price'], max_offer_price, precision_digits=2) == -1:
+                raise exceptions.UserError("The offer price must be at least %d" % max_offer_price)
+        return super(EstatePropertyOffer, self).create(vals_list)
